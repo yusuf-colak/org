@@ -1,6 +1,6 @@
-"use client";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+'use client';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,10 +9,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "components/ui/table";
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
+} from 'components/ui/table';
+import { Button } from './ui/button';
+import { useToast } from './ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const TaskListPage = () => {
   const router = useRouter();
@@ -20,22 +20,20 @@ const TaskListPage = () => {
   const { toast } = useToast();
   const [taskList, setTaskList] = useState([]);
   useEffect(() => {
-    axios.get("/api/task").then((res) => {
+    axios.get('/api/task').then((res) => {
       setTaskList(res.data);
     });
   }, []);
   const handleDelete = ({ idNumber }) => {
     axios
       .delete(`/api/deleteTask`, {
-        data: {
-          id: idNumber,
-        },
+        idNumber,
       })
       .then((res) => {
         setTaskList(res.data);
         if (res.status == 200) {
           toast({
-            title: "Cihaz Başarıyla Silindi",
+            title: 'Cihaz Başarıyla Silindi',
           });
         }
       });

@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
-import prisma from "lib/prisma";
+import { NextResponse } from 'next/server';
+import prisma from 'lib/prisma';
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: Request, res: Response) {
   try {
-    const { id } = await req.json();
+    const { idNumber } = await req.json();
 
     const silinen = await prisma.cihazlar.delete({
       where: {
-        id: Number(id),
+        id: Number(idNumber),
       },
     });
 
@@ -16,6 +16,6 @@ export async function DELETE(req: Request) {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse('Internal Error', { status: 500 });
   }
 }

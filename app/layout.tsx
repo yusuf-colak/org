@@ -11,8 +11,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="flex justify-center">
+      <body className='w-[95%] pt-3'>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }

@@ -1,14 +1,37 @@
-import { NextResponse } from "next/server";
-import prisma from "lib/prisma";
+import { NextResponse } from 'next/server';
+import prisma from 'lib/prisma';
 
 export async function POST(req: Request) {
   try {
-    const { cihazAdi, cihazicerik } = await req.json();
+    const {
+      cihazAdi,
+      demirbasNo,
+      marka,
+      model,
+      seriNo,
+      uretimYili,
+      mulkiyetDurumu,
+      kat,
+      bolum,
+      kalibrasyonTarihi,
+      pdfURL,
+      sonrakiKalibrasyonTarihi,
+    } = await req.json();
 
     const gorev = await prisma.cihazlar.create({
       data: {
         cihazAdi: cihazAdi,
-        cihazicerik: cihazicerik,
+        demirbasNo: demirbasNo,
+        marka: marka,
+        model: model,
+        seriNo: seriNo,
+        uretimYili: uretimYili,
+        mulkiyetDurumu: mulkiyetDurumu,
+        kat: kat,
+        bolum: bolum,
+        kalibrasyonTarihi: kalibrasyonTarihi,
+        pdfURL: pdfURL,
+        sonrakiKalibrasyonTarihi: sonrakiKalibrasyonTarihi,
       },
     });
 
@@ -16,6 +39,6 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (error) {
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse('Internal Error', { status: 500 });
   }
 }

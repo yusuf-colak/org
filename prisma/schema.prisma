@@ -9,6 +9,23 @@ datasource db {
 
 model cihazlar {
   id    Int     @id @default(autoincrement())
-  cihazAdi String
-  cihazicerik  String
+  cihazAdi String?
+  demirbasNo  String?
+  marka String?
+  model String?
+  seriNo String?
+  uretimYili String?
+  mulkiyetDurumu String?
+  kat String?
+  bolum String?
+  kalibrasyonTarihi String?
+  sonrakiKalibrasyonTarihi String?
+  pdfURL String?
+  sonGuncellemeTarihi DateTime @default(now())
+}
+
+model user {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
 }
