@@ -4,6 +4,7 @@ import { Button } from 'components/ui/button';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
+import { Switch } from 'components/ui/switch';
 
 const AddDevicePage = () => {
   const router = useRouter();
@@ -22,24 +23,12 @@ const AddDevicePage = () => {
         >
           Anasayfa
         </Button>
-        <div className="flex pb-4">
-          <p className="flex items-center text-xl mr-4 font-normal text-[#0b0b0b]">
-            Yönlendirme:
-          </p>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={!yonlendir}
-              onChange={handleToggleOnOff}
-            />
-            <div className="slider">
-              <span>Açık</span>
-              <span>Kapalı</span>
-            </div>
-          </label>
+        <div className="flex text-xl items-center">
+          <p className="mr-2">Yönlendirme: </p>
+          <Switch checked={yonlendir} onCheckedChange={handleToggleOnOff} />
         </div>
       </div>
-      <hr className="mb-3" />
+      <hr className="mt-3" />
 
       <FormPage yonlendir={yonlendir} />
     </main>

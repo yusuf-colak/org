@@ -13,8 +13,9 @@ import {
 import { Button } from './ui/button';
 import { useToast } from './ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { FileEdit, Trash2 } from 'lucide-react';
+import { FileEdit } from 'lucide-react';
 import Link from 'next/link';
+import CihazSilmeButton from './cihaz-silme';
 
 const ListPage = () => {
   const router = useRouter();
@@ -26,16 +27,7 @@ const ListPage = () => {
       setList(res.data);
     });
   }, []);
-  const handleDelete = async ({ idNumber }) => {
-    await axios.delete(`/api/deleteDevice/${idNumber}`).then((res) => {
-      setList(res.data);
-      if (res.status == 200) {
-        toast({
-          title: 'Cihaz Başarıyla Silindi',
-        });
-      }
-    });
-  };
+
   const handleDuzenle = ({ idNumber }) => {
     router.push(`/cihazDuzenle/${idNumber}`);
   };
@@ -50,7 +42,7 @@ const ListPage = () => {
             <TableHead>Cihaz Markası</TableHead>
             <TableHead>Cihaz Seri No</TableHead>
             <TableHead>Cihazın Bulunduğu Bölüm</TableHead>
-            <TableHead className="w-[260px] text-center">Sil/Düzenle</TableHead>
+            <TableHead className="w-[260px] text-center">Sil / Düzenle</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -61,7 +53,6 @@ const ListPage = () => {
                   className="hover:text-red-600 hover:underline hover:decoration-solid	"
                   href={`/cihaz/${cihaz.id}`}
                 >
-                  {' '}
                   {cihaz.cihazAdi}
                 </Link>
               </TableCell>
@@ -69,15 +60,10 @@ const ListPage = () => {
               <TableCell>{cihaz.marka}</TableCell>
               <TableCell>{cihaz.seriNo}</TableCell>
               <TableCell>{cihaz.bolum}</TableCell>
-              <TableCell className="w-[260px] text-center">
+              <TableCell className="flex justify-center w-[260px] text-center ">
+                <CihazSilmeButton idNumber={cihaz.id} setList={setList} />
                 <Button
-                  onClick={() => {
-                    handleDelete({ idNumber: cihaz.id });
-                  }}
-                >
-                  <Trash2 />
-                </Button>
-                <Button
+                  className="ml-1"
                   onClick={() => {
                     handleDuzenle({ idNumber: cihaz.id });
                   }}
