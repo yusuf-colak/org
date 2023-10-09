@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import prisma from 'lib/prisma';
 
-export async function DELETE(req: Request, res: Response) {
+export async function DELETE(req: Request, route: { params: { id: string } }) {
   try {
-    const { idNumber } = await req.json();
+    const id: number = Number(route.params.id);
 
-    const silinen = await prisma.cihazlar.delete({
+    await prisma.cihazlar.delete({
       where: {
-        id: Number(idNumber),
+        id: Number(id),
       },
     });
 

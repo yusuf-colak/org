@@ -13,10 +13,10 @@ import {
   FormMessage,
 } from 'components/ui/form';
 import { Input } from 'components/ui/input';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import UploadPDF from 'components/upload-pdf';
 
 const formSchema = z.object({
@@ -49,6 +49,8 @@ const formSchema = z.object({
   }),
 });
 const EditPage = () => {
+  const router = useRouter();
+
   const { toast } = useToast();
   const params = useParams();
   const [file, setFile] = useState([]);
@@ -72,7 +74,7 @@ const EditPage = () => {
   });
 
   useEffect(() => {
-    axios.post(`/api/getTask`, { id: params.idNumber }).then((res) => {
+    axios.get(`/api/getDevice/${params.idNumber}`).then((res) => {
       console.log(res.data);
       form.setValue('cihazAdi', res.data.cihazAdi);
       form.setValue('demirbasNo', res.data.demirbasNo);
@@ -94,7 +96,7 @@ const EditPage = () => {
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     axios
-      .put('/api/updateTask', {
+      .put('/api/updateDevice', {
         id: params.idNumber,
         cihazAdi: data.cihazAdi,
         demirbasNo: data.demirbasNo,
@@ -129,6 +131,13 @@ const EditPage = () => {
   }
   return (
     <>
+      <Button
+        onClick={() => {
+          router.push('/');
+        }}
+      >
+        Anasayfa
+      </Button>
       <div className=" flex justify-center items-center flex-col pb-4  ">
         <Form {...form}>
           <form
@@ -145,7 +154,6 @@ const EditPage = () => {
                     <FormControl>
                       <Input placeholder="Cihaz Adı" {...field} />
                     </FormControl>
-                    <FormDescription></FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

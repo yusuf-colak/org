@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import UploadPDF from './upload-pdf';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
@@ -47,10 +48,11 @@ const formSchema = z.object({
     message: 'Boş bırakılamaz',
   }),
 });
-export const FormPage = () => {
+export const FormPage = ({ yonlendir }) => {
   const { toast } = useToast();
   const [file, setFile] = useState([]);
   const [fileUpdated, setFileUpdated] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,7 +72,7 @@ export const FormPage = () => {
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     axios
-      .post('/api/addTask', {
+      .post('/api/addDevice', {
         cihazAdi: data.cihazAdi,
         demirbasNo: data.demirbasNo,
         marka: data.marka,
@@ -82,15 +84,18 @@ export const FormPage = () => {
         bolum: data.bolum,
         kalibrasyonTarihi: data.kalibrasyonTarihi,
         sonrakiKalibrasyonTarihi: data.sonrakiKalibrasyonTarihi,
-        pdfURL: file[0].url,
+        pdfURL: file[0]?.url,
       })
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          form.reset();
           toast({
             title: 'Cihaz Başarıyla Eklendi',
           });
+          form.reset();
+          if (yonlendir) {
+            router.push(`/cihaz/${res.data.id}`);
+          }
         }
         if (res.status === 500) {
           toast({

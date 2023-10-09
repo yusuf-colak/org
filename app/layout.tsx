@@ -1,3 +1,4 @@
+import { Toaster } from 'components/ui/toaster';
 import './globals.css';
 
 export const metadata = {
@@ -12,8 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="flex justify-center">
-      <body className='w-[95%] pt-3'>
+      <body className="w-[95%] pt-3">
         <main>{children}</main>
+        <Toaster />
       </body>
     </html>
   );
