@@ -12,12 +12,14 @@ import {
   FormLabel,
   FormMessage,
 } from 'components/ui/form';
+
 import { Input } from 'components/ui/input';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import UploadPDF from './upload-pdf';
 import { useRouter } from 'next/navigation';
+import { ComboboxForm, Combobox_Comps } from './comps/comcobox';
 
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
@@ -224,22 +226,7 @@ export const FormPage = ({ yonlendir }) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="bolum"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihazın Bulunduğu Bölüm</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın Bulunduğu Bölüm<"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <ComboboxForm form={form} />
               <FormField
                 name="kalibrasyonTarihi"
                 render={({ field }) => (

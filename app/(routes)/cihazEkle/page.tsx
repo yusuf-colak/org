@@ -3,7 +3,6 @@ import { FormPage } from 'components/form-page';
 import { Button } from 'components/ui/button';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import './page.css';
 import { Switch } from 'components/ui/switch';
 
 const AddDevicePage = () => {

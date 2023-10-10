@@ -24,6 +24,10 @@ model cihazlar {
   sonGuncellemeTarihi DateTime @default(now())
 }
 
+model bolumler{
+  id   Int     @id @default(autoincrement())
+  bolumAdi String?
+}
 model user {
   id    Int     @id @default(autoincrement())
   email String  @unique
