@@ -3,9 +3,9 @@ import prisma from 'lib/prisma';
 
 export async function GET(req: Request) {
   try {
-    const gorevler = await prisma.cihazlar.findMany();
+    const cihazlar = await prisma.cihazlar.findMany();
 
-    return new NextResponse(JSON.stringify(gorevler), {
+    return new NextResponse(JSON.stringify(cihazlar), {
       status: 200,
     });
   } catch (error) {

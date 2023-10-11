@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { useToast } from './ui/use-toast';
-import { Button } from './ui/button';
+import { useToast } from '../../ui/use-toast';
+import { Button } from '../../ui/button';
 import { Trash2 } from 'lucide-react';
 import {
   AlertDialog,
@@ -30,10 +30,8 @@ const CihazSilmeButton = ({ idNumber, setList }) => {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger>
-          <Button>
-            <Trash2 />
-          </Button>
+        <AlertDialogTrigger className="ml-1 border-1 border rounded-full border-gray-800 p-1 hover:bg-gray-300">
+          <Trash2 color='#f96b6b' />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -41,7 +39,7 @@ const CihazSilmeButton = ({ idNumber, setList }) => {
               Silme işlemini onaylıyor musunuz ?
             </AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogHeader>
             <AlertDialogCancel>İptal</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
@@ -50,7 +48,7 @@ const CihazSilmeButton = ({ idNumber, setList }) => {
             >
               Evet
             </AlertDialogAction>
-          </AlertDialogFooter>
+          </AlertDialogHeader>
         </AlertDialogContent>
       </AlertDialog>
     </div>

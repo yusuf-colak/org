@@ -18,7 +18,8 @@ export async function PUT(req: Request) {
       pdfURL,
       sonrakiKalibrasyonTarihi,
     } = await req.json();
-    const gorev = await prisma.cihazlar.update({
+
+    await prisma.cihazlar.update({
       where: {
         id: Number(id),
       },
@@ -37,8 +38,9 @@ export async function PUT(req: Request) {
         sonrakiKalibrasyonTarihi: sonrakiKalibrasyonTarihi,
       },
     });
+    const cihazlar = await prisma.cihazlar.findMany();
 
-    return new NextResponse(JSON.stringify(gorev), {
+    return new NextResponse(JSON.stringify(cihazlar), {
       status: 200,
     });
   } catch (error) {

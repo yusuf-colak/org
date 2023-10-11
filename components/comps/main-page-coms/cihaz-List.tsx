@@ -10,27 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from 'components/ui/table';
-import { Button } from './ui/button';
-import { useToast } from './ui/use-toast';
-import { useRouter } from 'next/navigation';
-import { FileEdit } from 'lucide-react';
 import Link from 'next/link';
-import CihazSilmeButton from './cihaz-silme';
+import CihazSilmeButton from './cihaz-silme-button';
+import CihazDuzenButton from './cihaz-duzen-button';
 
 const ListPage = () => {
-  const router = useRouter();
 
-  const { toast } = useToast();
   const [list, setList] = useState([]);
   useEffect(() => {
     axios.get('/api/device').then((res) => {
       setList(res.data);
     });
   }, []);
-
-  const handleDuzenle = ({ idNumber }) => {
-    router.push(`/cihazDuzenle/${idNumber}`);
-  };
   return (
     <>
       <Table className="w-full">
@@ -42,7 +33,9 @@ const ListPage = () => {
             <TableHead>Cihaz Markası</TableHead>
             <TableHead>Cihaz Seri No</TableHead>
             <TableHead>Cihazın Bulunduğu Bölüm</TableHead>
-            <TableHead className="w-[260px] text-center">Sil / Düzenle</TableHead>
+            <TableHead className="w-[260px] text-center">
+              Düzenle / Sil
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -61,15 +54,9 @@ const ListPage = () => {
               <TableCell>{cihaz.seriNo}</TableCell>
               <TableCell>{cihaz.bolum}</TableCell>
               <TableCell className="flex justify-center w-[260px] text-center ">
-                <CihazSilmeButton idNumber={cihaz.id} setList={setList} />
-                <Button
-                  className="ml-1"
-                  onClick={() => {
-                    handleDuzenle({ idNumber: cihaz.id });
-                  }}
-                >
-                  <FileEdit />
-                </Button>
+                <CihazDuzenButton idNumber={cihaz.id} cihaz={cihaz} setList={setList} />
+                <CihazSilmeButton  idNumber={cihaz.id} setList={setList} />
+
               </TableCell>
             </TableRow>
           ))}

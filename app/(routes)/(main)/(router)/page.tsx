@@ -1,6 +1,6 @@
 'use client';
-import ListPage from 'components/cihaz-List';
-import CihazEkleButton from 'components/cihaz-ekle-button';
+import ListPage from 'components/comps/main-page-coms/cihaz-List';
+import CihazEkleButton from 'components/comps/main-page-coms/cihaz-ekle-button';
 
 export default function Home() {
   return (
