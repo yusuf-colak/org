@@ -18,7 +18,8 @@ import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import UploadPDF from 'components/upload-pdf';
 import { ScrollArea } from 'components/ui/scroll-area';
-
+import { format } from 'date-fns';
+import { tr } from 'date-fns/locale';
 import { FileEdit, Trash2 } from 'lucide-react';
 import {
   AlertDialog,
@@ -31,6 +32,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'components/ui/alert-dialog';
+import { ComboboxForm } from '../comcobox';
+import { DatePickerForm } from '../data-picker';
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
     message: 'Boş bırakılamaz',
@@ -53,12 +56,8 @@ const formSchema = z.object({
   bolum: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
-  kalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
-  sonrakiKalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
+  kalibrasyonTarihi: z.date().nullable(),
+  sonrakiKalibrasyonTarihi: z.date().nullable(),
 });
 const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
   const { toast } = useToast();
@@ -67,19 +66,6 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
   const [pdfURL, setPdfURL] = useState('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      cihazAdi: '',
-      demirbasNo: '',
-      marka: '',
-      model: '',
-      seriNo: '',
-      uretimYili: '',
-      mulkiyetDurumu: '',
-      kat: '',
-      bolum: '',
-      kalibrasyonTarihi: '',
-      sonrakiKalibrasyonTarihi: '',
-    },
   });
 
   useEffect(() => {
@@ -92,7 +78,7 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
     form.setValue('mulkiyetDurumu', cihaz.mulkiyetDurumu);
     form.setValue('kat', cihaz.kat);
     form.setValue('bolum', cihaz.bolum);
-    form.setValue('kalibrasyonTarihi', cihaz.kalibrasyonTarihi);
+    form.setValue('kalibrasyonTarihi',  cihaz.kalibrasyonTarihi);
     form.setValue('sonrakiKalibrasyonTarihi', cihaz.sonrakiKalibrasyonTarihi);
     setPdfURL(cihaz.pdfURL);
   }, [cihaz]);
@@ -140,16 +126,16 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
         <AlertDialogTrigger className=" mr-1 border-1 border rounded-full border-gray-800 p-1 hover:bg-gray-300">
           <FileEdit />
         </AlertDialogTrigger>
-        <AlertDialogContent className="max-w-[1300px]">
-          <ScrollArea className="lg:h-full h-screen py-4">
+        <AlertDialogContent className="max-w-[1300px] px-0">
+          <ScrollArea className="lg:h-full h-screen py-4 ">
             <AlertDialogHeader>
               <AlertDialogTitle>Cihaz Bilgilerini Güncelle</AlertDialogTitle>
               <AlertDialogDescription>
-                <div className=" flex justify-center items-center flex-col pb-4  ">
+                <div className=" flex justify-center items-center flex-col pb-1 px-1  ">
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-8 flex w-[80%] items-center flex-col"
+                      className="flex w-[99%] items-center flex-col"
                     >
                       <div className="flex w-full flex-wrap justify-around">
                         <FormField
@@ -267,57 +253,16 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
                             </FormItem>
                           )}
                         />
-                        <FormField
-                          name="bolum"
-                          render={({ field }) => (
-                            <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                              <FormLabel>Cihazın Bulunduğu Bölüm</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Cihazın Bulunduğu Bölüm<"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription></FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                        <ComboboxForm form={form} />
+                        <DatePickerForm
+                          form={form}
+                          name={'kalibrasyonTarihi'}
+                          formLabel={'Cihazın kalibrasyonunun yapıldığı tarih'}
                         />
-                        <FormField
-                          name="kalibrasyonTarihi"
-                          render={({ field }) => (
-                            <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                              <FormLabel>
-                                Cihazın kalibrasyonunun yapıldığı tarih
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Cihazın kalibrasyonunun yapıldığı tarih"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription></FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          name="sonrakiKalibrasyonTarihi"
-                          render={({ field }) => (
-                            <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                              <FormLabel>
-                                Cihazın Sonraki kalibrasyon tarihi
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Cihazın Sonraki kalibrasyon tarihi"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription></FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                        <DatePickerForm
+                          form={form}
+                          name={'sonrakiKalibrasyonTarihi'}
+                          formLabel={'Cihazın Sonraki kalibrasyon tarihi'}
                         />
                       </div>
                       <UploadPDF

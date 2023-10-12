@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
+import { format } from 'date-fns';
+import { tr } from 'date-fns/locale';
+
 const CihazSayfasi = () => {
   const [cihaz, setCihaz] = useState([]);
   const params = useParams();
@@ -11,6 +14,12 @@ const CihazSayfasi = () => {
       console.log(res.data);
     });
   }, []);
+  const formattedKalibrasyonTarihi = cihaz.kalibrasyonTarihi
+    ? format(new Date(cihaz.kalibrasyonTarihi), 'PPP', { locale: tr })
+    : '';
+  const formattedSonrakiKalibrasyonTarihi = cihaz.kalibrasyonTarihi
+    ? format(new Date(cihaz.sonrakiKalibrasyonTarihi), 'PPP', { locale: tr })
+    : '';
   return (
     <main>
       <div className="flex">
@@ -51,11 +60,11 @@ const CihazSayfasi = () => {
       </div>
       <div className="flex">
         <p className="pr-2">Cihazın Kalibrasyon Tarihi: </p>
-        <p>{cihaz.kalibrasyonTarihi}</p>
+        <p>{formattedKalibrasyonTarihi}</p>
       </div>
       <div className="flex">
         <p className="pr-2">Cihazın Sonraki Kalibrasyon Tarihi: </p>
-        <p>{cihaz.sonrakiKalibrasyonTarihi}</p>
+        <p>{formattedSonrakiKalibrasyonTarihi}</p>
       </div>
       <div className="flex">
         <p className="pr-2">Cihaza ait belge: </p>

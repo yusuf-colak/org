@@ -19,7 +19,8 @@ import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import UploadPDF from './upload-pdf';
 import { useRouter } from 'next/navigation';
-import { ComboboxForm, Combobox_Comps } from './comps/comcobox';
+import { ComboboxForm } from './comps/comcobox';
+import { DatePickerForm } from './comps/data-picker';
 
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
@@ -43,12 +44,8 @@ const formSchema = z.object({
   bolum: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
-  kalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
-  sonrakiKalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
+  kalibrasyonTarihi: z.date().nullable(),
+  sonrakiKalibrasyonTarihi: z.date().nullable(),
 });
 export const FormPage = ({ yonlendir }) => {
   const { toast } = useToast();
@@ -227,39 +224,15 @@ export const FormPage = ({ yonlendir }) => {
                 )}
               />
               <ComboboxForm form={form} />
-              <FormField
-                name="kalibrasyonTarihi"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>
-                      Cihazın kalibrasyonunun yapıldığı tarih
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın kalibrasyonunun yapıldığı tarih"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <DatePickerForm
+                form={form}
+                name={'kalibrasyonTarihi'}
+                formLabel={'Cihazın kalibrasyonunun yapıldığı tarih'}
               />
-              <FormField
-                name="sonrakiKalibrasyonTarihi"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihazın Sonraki kalibrasyon tarihi</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın Sonraki kalibrasyon tarihi"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <DatePickerForm
+                form={form}
+                name={'sonrakiKalibrasyonTarihi'}
+                formLabel={'Cihazın Sonraki kalibrasyon tarihi'}
               />
             </div>
             <UploadPDF setFile={setFile} setFileUpdated={setFileUpdated} />
