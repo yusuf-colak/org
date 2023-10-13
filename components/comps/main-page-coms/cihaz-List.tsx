@@ -13,9 +13,9 @@ import {
 import Link from 'next/link';
 import CihazSilmeButton from './cihaz-silme-button';
 import CihazDuzenButton from './cihaz-duzen-button';
+import { Input } from 'components/ui/input';
 
 const ListPage = () => {
-
   const [list, setList] = useState([]);
   useEffect(() => {
     axios.get('/api/device').then((res) => {
@@ -24,6 +24,16 @@ const ListPage = () => {
   }, []);
   return (
     <>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value=""
+          onChange={(event) =>
+            table.getColumn('email')?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <Table className="w-full">
         <TableCaption>Cihaz Listesi.</TableCaption>
         <TableHeader>
@@ -54,9 +64,12 @@ const ListPage = () => {
               <TableCell>{cihaz.seriNo}</TableCell>
               <TableCell>{cihaz.bolum}</TableCell>
               <TableCell className="flex justify-center w-[260px] text-center ">
-                <CihazDuzenButton idNumber={cihaz.id} cihaz={cihaz} setList={setList} />
-                <CihazSilmeButton  idNumber={cihaz.id} setList={setList} />
-
+                <CihazDuzenButton
+                  idNumber={cihaz.id}
+                  cihaz={cihaz}
+                  setList={setList}
+                />
+                <CihazSilmeButton idNumber={cihaz.id} setList={setList} />
               </TableCell>
             </TableRow>
           ))}

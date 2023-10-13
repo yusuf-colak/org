@@ -1,6 +1,5 @@
 import React from 'react';
 import Secenekler_Main from 'components/comps/secenekler/secenekler-Main';
-import { Button } from 'components/ui/button';
 
 const Dashboard = () => {
   const secenekler = [{ valueNameId: 'Bölüm' }, { valueNameId: 'Kat' }];
@@ -9,7 +8,7 @@ const Dashboard = () => {
     <>
       {secenekler.map((secenek) => (
         <div>
-            <Secenekler_Main valueNameId={secenek.valueNameId} />
+          <Secenekler_Main valueNameId={secenek.valueNameId} />
         </div>
       ))}
     </>
