@@ -18,16 +18,18 @@ model cihazlar {
   mulkiyetDurumu String?
   kat String?
   bolum String?
-  kalibrasyonTarihi String?
-  sonrakiKalibrasyonTarihi String?
+  kalibrasyonTarihi DateTime?
+  sonrakiKalibrasyonTarihi DateTime?
   pdfURL String?
   sonGuncellemeTarihi DateTime @default(now())
 }
 
-model bolumler{
+model secenekler{
   id   Int     @id @default(autoincrement())
-  bolumAdi String?
+  valueName String
+  value String
 }
+
 model user {
   id    Int     @id @default(autoincrement())
   email String  @unique

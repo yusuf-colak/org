@@ -11,7 +11,11 @@ export async function DELETE(req: Request, route: { params: { id: string } }) {
       },
     });
 
-    const tumGorevler = await prisma.cihazlar.findMany();
+    const tumGorevler = await prisma.cihazlar.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    });
     return new NextResponse(JSON.stringify(tumGorevler), {
       status: 200,
     });

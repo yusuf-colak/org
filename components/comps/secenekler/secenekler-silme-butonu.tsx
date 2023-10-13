@@ -13,25 +13,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'components/ui/alert-dialog';
-const BölümSilmeButton = ({ idNumber, setList, bolumAdi }) => {
+const SeceneklerSilmeButton = ({ idNumber, setList, value ,valueNameId }) => {
   const { toast } = useToast();
 
   const handleDelete = async ({ idNumber }) => {
-    await axios.delete(`/api/bolum/deleteBolum/${idNumber}`).then((res) => {
-      setList(res.data);
-      if (res.status == 200) {
-        toast({
-          title: 'Bölün Başarıyla Silindi',
-          description: `Bölüm Adı:  ${bolumAdi}`,
-        });
-      }
-      if (res.status !== 200) {
-        toast({
-          title: 'Bölüm Silinemedi',
-          description: `Bölüm Adı: ${bolumAdi}`,
-        });
-      }
-    });
+    await axios
+      .delete(`/api/secenekler/deleteSecenekler/${idNumber}`)
+      .then((res) => {
+        setList(res.data);
+        if (res.status == 200) {
+          toast({
+            title: `${valueNameId} Başarıyla Silindi`,
+            description: `${valueNameId} :  ${value}`,
+          });
+        }
+        if (res.status !== 200) {
+          toast({
+            title:`${valueNameId} Silinemedi!`,
+            description: `${valueNameId} : ${value}`,
+          });
+        }
+      });
   };
   return (
     <div>
@@ -61,4 +63,4 @@ const BölümSilmeButton = ({ idNumber, setList, bolumAdi }) => {
   );
 };
 
-export default BölümSilmeButton;
+export default SeceneklerSilmeButton;

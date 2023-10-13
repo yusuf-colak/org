@@ -3,12 +3,12 @@ import prisma from 'lib/prisma';
 
 export async function GET(req: Request) {
   try {
-    const bolumler = await prisma.bolumler.findMany({
+    const secenekler = await prisma.secenekler.findMany({
       orderBy: {
-        id: 'desc', 
+        id: 'desc',
       },
     });
-    return new NextResponse(JSON.stringify(bolumler), {
+    return new NextResponse(JSON.stringify(secenekler), {
       status: 200,
     });
   } catch (error) {

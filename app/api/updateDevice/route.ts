@@ -38,7 +38,11 @@ export async function PUT(req: Request) {
         sonrakiKalibrasyonTarihi: sonrakiKalibrasyonTarihi,
       },
     });
-    const cihazlar = await prisma.cihazlar.findMany();
+    const cihazlar = await prisma.cihazlar.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    });
 
     return new NextResponse(JSON.stringify(cihazlar), {
       status: 200,

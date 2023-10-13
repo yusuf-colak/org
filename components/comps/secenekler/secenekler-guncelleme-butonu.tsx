@@ -27,31 +27,37 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 const formSchema = z.object({
-  bolumValue: z.string().min(1, {
+  value: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
 });
 
-const BolumGuncellemeSayfasi = ({ setList, bolumId, bolumAdi }) => {
+const SeceneklerGuncellemeSayfasi = ({
+  setList,
+  bolumId,
+  value,
+  valueNameId,
+}) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      bolumValue: bolumAdi, // Set the default value to bolumAdi
+      value: value, // Set the default value to bolumAdi
     },
   });
   const handleDuzenle = () => {
     return (data) => {
       axios
-        .put('/api/bolum/updateBolum', {
-          bolumAdi: data.bolumValue,
+        .put('/api/secenekler/updateSecenekler', {
+          value: data.value,
           id: bolumId,
+          valueName: valueNameId,
         })
         .then((res) => {
           form.reset();
           if (res.status === 200) {
             toast({
-              title: 'Bölün Başarıyla Güncellendi',
+              title: `${valueNameId} Başarıyla Güncellendi`,
             });
             setList(res.data);
           }
@@ -59,7 +65,7 @@ const BolumGuncellemeSayfasi = ({ setList, bolumId, bolumAdi }) => {
             form.reset();
             toast({
               variant: 'destructive',
-              title: 'Bölün Güncellenirken Bir Hata Oluştu',
+              title: `${valueNameId} Güncellenirken Bir Hata Oluştu`,
             });
           }
         });
@@ -80,7 +86,7 @@ const BolumGuncellemeSayfasi = ({ setList, bolumId, bolumAdi }) => {
                 <div>
                   <FormField
                     control={form.control}
-                    name="bolumValue"
+                    name="value"
                     render={({ field }) => (
                       <FormItem className="w-full min-w-[300px]">
                         <FormControl>
@@ -105,4 +111,4 @@ const BolumGuncellemeSayfasi = ({ setList, bolumId, bolumAdi }) => {
   );
 };
 
-export default BolumGuncellemeSayfasi;
+export default SeceneklerGuncellemeSayfasi;

@@ -3,7 +3,11 @@ import prisma from 'lib/prisma';
 
 export async function GET(req: Request) {
   try {
-    const cihazlar = await prisma.cihazlar.findMany();
+    const cihazlar = await prisma.cihazlar.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+    });
 
     return new NextResponse(JSON.stringify(cihazlar), {
       status: 200,

@@ -18,7 +18,7 @@ import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import UploadPDF from 'components/upload-pdf';
 import { ScrollArea } from 'components/ui/scroll-area';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { FileEdit, Trash2 } from 'lucide-react';
 import {
@@ -56,14 +56,18 @@ const formSchema = z.object({
   bolum: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
-  kalibrasyonTarihi: z.date().nullable(),
-  sonrakiKalibrasyonTarihi: z.date().nullable(),
 });
+
 const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
   const { toast } = useToast();
   const [file, setFile] = useState([]);
   const [fileUpdated, setFileUpdated] = useState(false);
   const [pdfURL, setPdfURL] = useState('');
+  const [kalibrasyonDate, setKalibrasyonDate] = useState<Date | undefined>();
+  const [sonrakiKalibrasyonDate, setSonrakiKalibrasyonDate] = useState<
+    Date | undefined
+  >();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -78,11 +82,11 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
     form.setValue('mulkiyetDurumu', cihaz.mulkiyetDurumu);
     form.setValue('kat', cihaz.kat);
     form.setValue('bolum', cihaz.bolum);
-    form.setValue('kalibrasyonTarihi',  cihaz.kalibrasyonTarihi);
-    form.setValue('sonrakiKalibrasyonTarihi', cihaz.sonrakiKalibrasyonTarihi);
+    setKalibrasyonDate(cihaz.kalibrasyonTarihi);
+    setSonrakiKalibrasyonDate(cihaz.sonrakiKalibrasyonTarihi);
     setPdfURL(cihaz.pdfURL);
   }, [cihaz]);
-
+  console.log(cihaz.cihazAdi, 'kalibrasyonDate', kalibrasyonDate);
   function onSubmit(data: z.infer<typeof formSchema>) {
     axios
       .put('/api/updateDevice', {
@@ -96,8 +100,8 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
         mulkiyetDurumu: data.mulkiyetDurumu,
         kat: data.kat,
         bolum: data.bolum,
-        kalibrasyonTarihi: data.kalibrasyonTarihi,
-        sonrakiKalibrasyonTarihi: data.sonrakiKalibrasyonTarihi,
+        kalibrasyonTarihi: kalibrasyonDate,
+        sonrakiKalibrasyonTarihi: sonrakiKalibrasyonDate,
         pdfURL: file[0]?.url,
       })
       .then((res) => {
@@ -117,9 +121,8 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
           });
         }
       });
-
-    console.log(data);
   }
+
   return (
     <div>
       <AlertDialog>
@@ -236,35 +239,30 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
                             </FormItem>
                           )}
                         />
-                        <FormField
-                          control={form.control}
-                          name="kat"
-                          render={({ field }) => (
-                            <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                              <FormLabel>Cihazın Bulunduğu Kat</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Cihazın Bulunduğu Kat"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription></FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <ComboboxForm form={form} />
-                        <DatePickerForm
+                        <ComboboxForm
                           form={form}
+                          name={'kat'}
+                          valueNameId={'Kat'}
+                        />
+                        <ComboboxForm
+                          form={form}
+                          name={'bolum'}
+                          valueNameId={'Bölüm'}
+                        />
+                        <DatePickerForm
+                          kalibrasyonDate={kalibrasyonDate}
+                          setKalibrasyonDate={setKalibrasyonDate}
                           name={'kalibrasyonTarihi'}
                           formLabel={'Cihazın kalibrasyonunun yapıldığı tarih'}
                         />
                         <DatePickerForm
-                          form={form}
+                          sonrakiKalibrasyonDate={sonrakiKalibrasyonDate}
+                          setSonrakiKalibrasyonDate={setSonrakiKalibrasyonDate}
                           name={'sonrakiKalibrasyonTarihi'}
                           formLabel={'Cihazın Sonraki kalibrasyon tarihi'}
                         />
                       </div>
+
                       <UploadPDF
                         setFile={setFile}
                         setFileUpdated={setFileUpdated}

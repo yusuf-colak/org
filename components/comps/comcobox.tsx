@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -23,35 +23,31 @@ import {
   FormMessage,
 } from 'components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-
-const bolumler = [
-  { label: 'English', value: 'English' },
-  { label: 'French', value: 'French' },
-  { label: 'German', value: 'German' },
-  { label: 'Spanish', value: 'Spanish' },
-  { label: 'Portuguese', value: 'Portuguese' },
-  { label: 'Russian', value: 'Russian' },
-  { label: 'Japanese', value: 'Japanese' },
-  { label: 'Korean', value: 'Korean' },
-  { label: 'Chinese', value: 'Chinese' },
-] as const;
-
+import axios from 'axios';
 const FormSchema = z.object({
   bolum: z.string({
     required_error: 'Please select a bolum.',
   }),
 });
 
-export function ComboboxForm({ form }) {
+export function ComboboxForm({ form, valueNameId, name }) {
   const [open, setOpen] = React.useState(false);
+  const [list, setList] = React.useState([]);
+  useEffect(() => {
+    axios
+      .get(`/api/secenekler/getSecenekler/alfabetik/${valueNameId}`)
+      .then((res) => {
+        setList(res.data);
+      });
+  }, []);
 
   return (
     <FormField
       control={form.control}
-      name="bolum"
+      name={name}
       render={({ field }) => (
         <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-        <FormLabel>Bölüm Seçiniz</FormLabel>
+          <FormLabel>{valueNameId} Seçiniz</FormLabel>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <FormControl>
@@ -65,36 +61,35 @@ export function ComboboxForm({ form }) {
                   )}
                 >
                   {field.value
-                    ? bolumler.find((bolum) => bolum.value === field.value)
-                        ?.label
-                    : 'Select bolum'}
+                    ? list.find((list) => list.value === field.value)?.value
+                    : `${valueNameId} Seçiniz`}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-72 p-0">
               <Command>
-                <CommandInput placeholder="Search bolum..." />
-                <CommandEmpty>No bolum found.</CommandEmpty>
+                <CommandInput placeholder={`${valueNameId} Arayınız...`} />
+                <CommandEmpty>{valueNameId} Bulunamadı.</CommandEmpty>
                 <CommandGroup>
-                  {bolumler.map((bolum) => (
+                  {list.map((list) => (
                     <CommandItem
-                      value={bolum.label}
-                      key={bolum.value}
+                      value={list.value}
+                      key={list.value}
                       onSelect={() => {
-                        form.setValue('bolum', bolum.value);
+                        form.setValue(name, list.value);
                         setOpen(false);
                       }}
                     >
                       <Check
                         className={cn(
                           'mr-2 h-4 w-4',
-                          bolum.value === field.value
+                          list.value === field.value
                             ? 'opacity-100'
                             : 'opacity-0'
                         )}
                       />
-                      {bolum.label}
+                      {list.value}
                     </CommandItem>
                   ))}
                 </CommandGroup>

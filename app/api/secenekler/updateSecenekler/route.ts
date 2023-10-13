@@ -3,21 +3,25 @@ import prisma from 'lib/prisma';
 
 export async function PUT(req: Request) {
   try {
-    const { id, bolumAdi } = await req.json();
-    await prisma.bolumler.update({
+    const { id, value, valueName } = await req.json();
+    await prisma.secenekler.update({
       where: {
         id: Number(id),
       },
       data: {
-        bolumAdi: bolumAdi,
+        value: value,
       },
     });
-    const bolumler = await prisma.bolumler.findMany({
+    const secenekler = await prisma.secenekler.findMany({
+      where: {
+        valueName: valueName,
+      },
       orderBy: {
         id: 'desc',
       },
     });
-    return new NextResponse(JSON.stringify(bolumler), {
+
+    return new NextResponse(JSON.stringify(secenekler), {
       status: 200,
     });
   } catch (error) {

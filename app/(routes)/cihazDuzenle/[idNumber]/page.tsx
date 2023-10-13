@@ -18,6 +18,8 @@ import axios from 'axios';
 import { useToast } from 'components/ui/use-toast';
 import { useParams, useRouter } from 'next/navigation';
 import UploadPDF from 'components/upload-pdf';
+import { DatePickerForm } from 'components/comps/data-picker';
+import { ComboboxForm } from 'components/comps/comcobox';
 
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
@@ -41,21 +43,18 @@ const formSchema = z.object({
   bolum: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
-  kalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
-  sonrakiKalibrasyonTarihi: z.string().min(1, {
-    message: 'Boş bırakılamaz',
-  }),
 });
 const EditPage = () => {
   const router = useRouter();
-
   const { toast } = useToast();
   const params = useParams();
   const [file, setFile] = useState([]);
   const [fileUpdated, setFileUpdated] = useState(false);
   const [pdfURL, setPdfURL] = useState('');
+  const [kalibrasyonDate, setKalibrasyonDate] = useState<Date | undefined>();
+  const [sonrakiKalibrasyonDate, setSonrakiKalibrasyonDate] = useState<
+    Date | undefined
+  >();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,14 +67,12 @@ const EditPage = () => {
       mulkiyetDurumu: '',
       kat: '',
       bolum: '',
-      kalibrasyonTarihi: '',
-      sonrakiKalibrasyonTarihi: '',
     },
   });
 
   useEffect(() => {
     axios.get(`/api/getDevice/${params.idNumber}`).then((res) => {
-      console.log(res.data);
+      console.log("res.data", res.data);
       form.setValue('cihazAdi', res.data.cihazAdi);
       form.setValue('demirbasNo', res.data.demirbasNo);
       form.setValue('marka', res.data.marka);
@@ -85,11 +82,8 @@ const EditPage = () => {
       form.setValue('mulkiyetDurumu', res.data.mulkiyetDurumu);
       form.setValue('kat', res.data.kat);
       form.setValue('bolum', res.data.bolum);
-      form.setValue('kalibrasyonTarihi', res.data.kalibrasyonTarihi);
-      form.setValue(
-        'sonrakiKalibrasyonTarihi',
-        res.data.sonrakiKalibrasyonTarihi
-      );
+      setKalibrasyonDate(res.data.kalibrasyonTarihi);
+      setSonrakiKalibrasyonDate(res.data.sonrakiKalibrasyonTarihi);
       setPdfURL(res.data.pdfURL);
     });
   }, []);
@@ -107,8 +101,8 @@ const EditPage = () => {
         mulkiyetDurumu: data.mulkiyetDurumu,
         kat: data.kat,
         bolum: data.bolum,
-        kalibrasyonTarihi: data.kalibrasyonTarihi,
-        sonrakiKalibrasyonTarihi: data.sonrakiKalibrasyonTarihi,
+        kalibrasyonTarihi: kalibrasyonDate,
+        sonrakiKalibrasyonTarihi: sonrakiKalibrasyonDate,
         pdfURL: file[0]?.url,
       })
       .then((res) => {
@@ -251,55 +245,19 @@ const EditPage = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="bolum"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihazın Bulunduğu Bölüm</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın Bulunduğu Bölüm<"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <ComboboxForm form={form} />
+              
+              <DatePickerForm
+                kalibrasyonDate={kalibrasyonDate}
+                setKalibrasyonDate={setKalibrasyonDate}
+                name={'kalibrasyonTarihi'}
+                formLabel={'Cihazın kalibrasyonunun yapıldığı tarih'}
               />
-              <FormField
-                name="kalibrasyonTarihi"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>
-                      Cihazın kalibrasyonunun yapıldığı tarih
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın kalibrasyonunun yapıldığı tarih"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="sonrakiKalibrasyonTarihi"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihazın Sonraki kalibrasyon tarihi</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Cihazın Sonraki kalibrasyon tarihi"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <DatePickerForm
+                sonrakiKalibrasyonDate={sonrakiKalibrasyonDate}
+                setSonrakiKalibrasyonDate={setSonrakiKalibrasyonDate}
+                name={'sonrakiKalibrasyonTarihi'}
+                formLabel={'Cihazın Sonraki kalibrasyon tarihi'}
               />
             </div>
             <UploadPDF setFile={setFile} setFileUpdated={setFileUpdated} />

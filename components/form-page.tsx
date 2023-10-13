@@ -44,14 +44,17 @@ const formSchema = z.object({
   bolum: z.string().min(1, {
     message: 'Boş bırakılamaz',
   }),
-  kalibrasyonTarihi: z.date().nullable(),
-  sonrakiKalibrasyonTarihi: z.date().nullable(),
 });
 export const FormPage = ({ yonlendir }) => {
   const { toast } = useToast();
   const [file, setFile] = useState([]);
   const [fileUpdated, setFileUpdated] = useState(false);
   const router = useRouter();
+  const [kalibrasyonDate, setKalibrasyonDate] = useState<Date | undefined>();
+  const [sonrakiKalibrasyonDate, setSonrakiKalibrasyonDate] = useState<
+    Date | undefined
+  >();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,8 +67,6 @@ export const FormPage = ({ yonlendir }) => {
       mulkiyetDurumu: '',
       kat: '',
       bolum: '',
-      kalibrasyonTarihi: '',
-      sonrakiKalibrasyonTarihi: '',
     },
   });
 
@@ -81,8 +82,8 @@ export const FormPage = ({ yonlendir }) => {
         mulkiyetDurumu: data.mulkiyetDurumu,
         kat: data.kat,
         bolum: data.bolum,
-        kalibrasyonTarihi: data.kalibrasyonTarihi,
-        sonrakiKalibrasyonTarihi: data.sonrakiKalibrasyonTarihi,
+        kalibrasyonTarihi: kalibrasyonDate,
+        sonrakiKalibrasyonTarihi: sonrakiKalibrasyonDate,
         pdfURL: file[0]?.url,
       })
       .then((res) => {
@@ -209,28 +210,17 @@ export const FormPage = ({ yonlendir }) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="kat"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihazın Bulunduğu Kat</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Cihazın Bulunduğu Kat" {...field} />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <ComboboxForm form={form} />
+              <ComboboxForm form={form} name={'kat'} valueNameId={'Kat'} />
+              <ComboboxForm form={form} name={'bolum'} valueNameId={'Bölüm'} />
               <DatePickerForm
-                form={form}
+                kalibrasyonDate={kalibrasyonDate}
+                setKalibrasyonDate={setKalibrasyonDate}
                 name={'kalibrasyonTarihi'}
                 formLabel={'Cihazın kalibrasyonunun yapıldığı tarih'}
               />
               <DatePickerForm
-                form={form}
+                sonrakiKalibrasyonDate={sonrakiKalibrasyonDate}
+                setSonrakiKalibrasyonDate={setSonrakiKalibrasyonDate}
                 name={'sonrakiKalibrasyonTarihi'}
                 formLabel={'Cihazın Sonraki kalibrasyon tarihi'}
               />
