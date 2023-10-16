@@ -197,19 +197,13 @@ export const FormPage = ({ yonlendir }) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="mulkiyetDurumu"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihaz Mülkiyet Durumu</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Cihaz Mülkiyet Durumu" {...field} />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            
+              <ComboboxForm
+                form={form}
+                name={'mulkiyetDurumu'}
+                valueNameId={'Cihaz Mülkiyet Durumu'}
               />
+
               <ComboboxForm form={form} name={'kat'} valueNameId={'Kat'} />
               <ComboboxForm form={form} name={'bolum'} valueNameId={'Bölüm'} />
               <DatePickerForm

@@ -1,8 +1,5 @@
-'use client';
 import React from 'react';
 import axios from 'axios';
-import { useToast } from '../../ui/use-toast';
-import { Button } from '../../ui/button';
 import { Trash2 } from 'lucide-react';
 import {
   AlertDialog,
@@ -15,17 +12,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'components/ui/alert-dialog';
-const CihazSilmeButton = ({ idNumber, setList }) => {
-  const { toast } = useToast();
-
+const CihazSilme = ({ idNumber, getData }) => {
   const handleDelete = async ({ idNumber }) => {
     await axios.delete(`/api/deleteDevice/${idNumber}`).then((res) => {
-      setList(res.data);
-      if (res.status == 200) {
-        toast({
-          title: 'Cihaz Başarıyla Silindi',
-        });
-      }
+      getData();
     });
   };
   return (
@@ -56,4 +46,4 @@ const CihazSilmeButton = ({ idNumber, setList }) => {
   );
 };
 
-export default CihazSilmeButton;
+export default CihazSilme;

@@ -32,8 +32,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'components/ui/alert-dialog';
-import { ComboboxForm } from '../comcobox';
-import { DatePickerForm } from '../data-picker';
+import { ComboboxForm } from 'components/comps/comcobox';
+import { DatePickerForm } from 'components/comps/data-picker';
 const formSchema = z.object({
   cihazAdi: z.string().min(1, {
     message: 'Boş bırakılamaz',
@@ -58,7 +58,7 @@ const formSchema = z.object({
   }),
 });
 
-const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
+const CihazDuzenButton = ({ idNumber, cihaz, getData }) => {
   const { toast } = useToast();
   const [file, setFile] = useState([]);
   const [fileUpdated, setFileUpdated] = useState(false);
@@ -67,26 +67,24 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
   const [sonrakiKalibrasyonDate, setSonrakiKalibrasyonDate] = useState<
     Date | undefined
   >();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
-    form.setValue('cihazAdi', cihaz.cihazAdi);
-    form.setValue('demirbasNo', cihaz.demirbasNo);
-    form.setValue('marka', cihaz.marka);
-    form.setValue('model', cihaz.model);
-    form.setValue('seriNo', cihaz.seriNo);
-    form.setValue('uretimYili', cihaz.uretimYili);
-    form.setValue('mulkiyetDurumu', cihaz.mulkiyetDurumu);
-    form.setValue('kat', cihaz.kat);
-    form.setValue('bolum', cihaz.bolum);
-    setKalibrasyonDate(cihaz.kalibrasyonTarihi);
-    setSonrakiKalibrasyonDate(cihaz.sonrakiKalibrasyonTarihi);
-    setPdfURL(cihaz.pdfURL);
+    form.setValue('cihazAdi', cihaz?.cihazAdi);
+    form.setValue('demirbasNo', cihaz?.demirbasNo);
+    form.setValue('marka', cihaz?.marka);
+    form.setValue('model', cihaz?.model);
+    form.setValue('seriNo', cihaz?.seriNo);
+    form.setValue('uretimYili', cihaz?.uretimYili);
+    form.setValue('mulkiyetDurumu', cihaz?.mulkiyetDurumu);
+    form.setValue('kat', cihaz?.kat);
+    form.setValue('bolum', cihaz?.bolum);
+    setKalibrasyonDate(cihaz?.kalibrasyonTarihi);
+    setSonrakiKalibrasyonDate(cihaz?.sonrakiKalibrasyonTarihi);
+    setPdfURL(cihaz?.pdfURL);
   }, [cihaz]);
-  console.log(cihaz.cihazAdi, 'kalibrasyonDate', kalibrasyonDate);
   function onSubmit(data: z.infer<typeof formSchema>) {
     axios
       .put('/api/updateDevice', {
@@ -108,7 +106,7 @@ const CihazDuzenButton = ({ idNumber, cihaz, setList }) => {
         console.log(res);
 
         if (res.status === 200) {
-          setList(res.data);
+          getData();
           form.reset();
           toast({
             title: 'Veriler Başarıyla Güncellendi',

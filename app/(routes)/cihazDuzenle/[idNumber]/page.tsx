@@ -72,7 +72,7 @@ const EditPage = () => {
 
   useEffect(() => {
     axios.get(`/api/getDevice/${params.idNumber}`).then((res) => {
-      console.log("res.data", res.data);
+      console.log('res.data', res.data);
       form.setValue('cihazAdi', res.data.cihazAdi);
       form.setValue('demirbasNo', res.data.demirbasNo);
       form.setValue('marka', res.data.marka);
@@ -218,18 +218,11 @@ const EditPage = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="mulkiyetDurumu"
-                render={({ field }) => (
-                  <FormItem className=" m-2 md:w-1/4 w-full min-w-[300px]">
-                    <FormLabel>Cihaz Mülkiyet Durumu</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Cihaz Mülkiyet Durumu" {...field} />
-                    </FormControl>
-                    <FormDescription></FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
+
+              <ComboboxForm
+                form={form}
+                name={'mulkiyetDurumu'}
+                valueNameId={'Cihaz Mülkiyet Durumu'}
               />
               <FormField
                 control={form.control}
@@ -246,7 +239,7 @@ const EditPage = () => {
                 )}
               />
               <ComboboxForm form={form} />
-              
+
               <DatePickerForm
                 kalibrasyonDate={kalibrasyonDate}
                 setKalibrasyonDate={setKalibrasyonDate}

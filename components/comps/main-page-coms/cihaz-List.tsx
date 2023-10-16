@@ -26,7 +26,7 @@ const ListPage = () => {
     <>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter..."
           value=""
           onChange={(event) =>
             table.getColumn('email')?.setFilterValue(event.target.value)
