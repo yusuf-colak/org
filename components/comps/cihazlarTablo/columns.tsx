@@ -14,6 +14,7 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
   {
+    yazılısı: 'Cihaz Adı',
     accessorKey: 'cihazAdi',
     header: ({ column }) => {
       return (
@@ -27,39 +28,48 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
+    yazılısı: 'Demirbaş No',
     accessorKey: 'demirbasNo',
     header: 'demirbasNo',
   },
   {
+    yazılısı: 'Marka',
     accessorKey: 'marka',
     header: 'marka',
   },
   {
+    yazılısı: 'Model',
     accessorKey: 'model',
     header: 'model',
   },
   {
+    yazılısı: 'Seri No',
     accessorKey: 'seriNo',
     header: 'seriNo',
   },
   {
+    yazılısı: 'Üretim Yılı',
     accessorKey: 'uretimYili',
     header: 'uretimYili',
   },
   {
+    yazılısı: 'Mülkiyet Durumu',
     accessorKey: 'mulkiyetDurumu',
     header: 'mulkiyetDurumu',
   },
   {
+    yazılısı: 'Kategori',
     accessorKey: 'kat',
     header: 'kat',
   },
 
   {
+    yazılısı: 'Bölüm',
     accessorKey: 'bolum',
     header: 'bolum',
   },
   {
+    yazılısı: 'Kalibrasyon Tarihi',
     accessorKey: 'kalibrasyonTarihi',
     header: () => <div>kalibrasyonTarihi</div>,
     cell: ({ row }) => {
@@ -72,6 +82,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
+    yazılısı: 'Sonraki Kalibrasyon Tarihi',
     accessorKey: 'sonrakiKalibrasyonTarihi',
     header: () => <div>sonrakiKalibrasyonTarihi</div>,
     cell: ({ row }) => {
@@ -84,10 +95,12 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
+    yazılısı: 'PDF URL',
     accessorKey: 'pdfURL',
     header: 'pdfURL',
   },
   {
+    yazılısı: 'Son Güncelleme Tarihi',
     accessorKey: 'sonGuncellemeTarihi',
     header: () => <div>sonGuncellemeTarihi</div>,
     cell: ({ row }) => {

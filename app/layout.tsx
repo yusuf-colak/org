@@ -1,5 +1,6 @@
 import { Toaster } from 'components/ui/toaster';
 import './globals.css';
+import NavMenu from 'components/comps/NavMenu/nav';
 
 export const metadata = {
   title: 'Welcome to org',
@@ -14,7 +15,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="flex justify-center">
       <body className="w-[95%] pt-3">
-        <main>{children}</main>
+        <main>
+          <>
+            <NavMenu />
+            <hr className="mb-3" />
+            {children}
+          </>
+        </main>
         <Toaster />
       </body>
     </html>

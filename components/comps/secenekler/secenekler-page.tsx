@@ -46,7 +46,7 @@ const Secenekler_Dashboard_Page = ({ valueNameId }) => {
     },
   });
 
-  useEffect(() => {
+  useEffect(() => { 
     axios.get(`/api/secenekler/getSecenekler/${valueNameId}`).then((res) => {
       setList(res.data);
     });

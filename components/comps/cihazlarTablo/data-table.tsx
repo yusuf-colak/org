@@ -13,8 +13,8 @@ import {
   VisibilityState,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import CihazSilme from 'components/comps/cihaz-silme';
-import CihazDuzenLE from 'components/comps/cihaz-duzenLE';
+import CihazSilme from 'components/comps/cihazlarTablo/cihaz-silme';
+import CihazDuzenLE from 'components/comps/cihazlarTablo/cihaz-duzenLE';
 import { Button } from 'components/ui/button';
 import { Input } from 'components/ui/input';
 
@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu';
 import { IconLeft, IconRight } from 'react-day-picker';
+import CihazFiltreleme from './cihaz-filtreleme';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -49,12 +50,10 @@ export function DataTable<TData, TValue>({
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
+      demirbasNo: false,
       seriNo: false,
       model: false,
       uretimYili: false,
-      mulkiyetDurumu: false,
-      kat: false,
-      bolum: false,
       kalibrasyonTarihi: false,
       sonrakiKalibrasyonTarihi: false,
       pdfURL: false,
@@ -76,20 +75,10 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
-  console.log(table.getRowModel().rows);
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Cihazları Filtrele..."
-          value={
-            (table.getColumn('cihazAdi')?.getFilterValue() as string) ?? ''
-          }
-          onChange={(event) =>
-            table.getColumn('cihazAdi')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <CihazFiltreleme columns={columns} table={table} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -134,7 +123,9 @@ export function DataTable<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead>Düzenle / Sil</TableHead>
+                <TableHead className="flex justify-end items-center">
+                  Düzenle / Sil
+                </TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -153,13 +144,7 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell className="flex">
-                    <CihazSilme
-                      idNumber={table
-                        .getRowModel()
-                        .rowsById[row?.id]?.original.id.toString()}
-                      getData={getData}
-                    />
+                  <TableCell className="flex justify-end items-center">
                     <CihazDuzenLE
                       idNumber={table
                         .getRowModel()
@@ -167,6 +152,12 @@ export function DataTable<TData, TValue>({
                       cihaz={table.getRowModel().rowsById[row.id]?.original}
                       getData={getData}
                       row={row?.id.toString()}
+                    />
+                    <CihazSilme
+                      idNumber={table
+                        .getRowModel()
+                        .rowsById[row?.id]?.original.id.toString()}
+                      getData={getData}
                     />
                   </TableCell>
                 </TableRow>
@@ -177,7 +168,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Cihaz Bulunamadı...
                 </TableCell>
               </TableRow>
             )}

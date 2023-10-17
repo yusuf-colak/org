@@ -9,7 +9,7 @@ async function fetchData() {
   return data;
 }
 
-export default function DemoPage() {
+export default function CihazlarTablosu() {
   const [data, setData] = useState<Payment[]>([]);
 
   const getData = async () => {

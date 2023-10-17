@@ -19,7 +19,7 @@ export function DatePickerForm({
   setSonrakiKalibrasyonDate,
   formLabel,
 }) {
-  if (!kalibrasyonDate) console.log('kalibrasyonDate', kalibrasyonDate);
+  if (kalibrasyonDate) console.log('kalibrasyonDate', kalibrasyonDate);
   return (
     <div className="m-2 md:w-1/4 w-full min-w-[300px]">
       <FormLabel>{formLabel}</FormLabel>

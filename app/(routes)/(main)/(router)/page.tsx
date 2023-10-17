@@ -1,13 +1,16 @@
 'use client';
-import ListPage from 'components/comps/main-page-coms/cihaz-List';
-import CihazEkleButton from 'components/comps/main-page-coms/cihaz-ekle-button';
+import NavMenu from 'components/comps/NavMenu/nav';
+import CihazlarTablosu from 'components/comps/cihazlarTablo/cihazlarTablosu';
+import ListPage from 'components/comps/iptal-edildi/cihaz-List';
+import CihazEkleButton from 'components/comps/iptal-edildi/cihaz-ekle-button';
 
 export default function Home() {
   return (
     <>
-      <CihazEkleButton />
-      <hr className="mb-3" />
-      <ListPage />
+      {/* <CihazEkleButton />*/}
+
+      <CihazlarTablosu />
+      {/* <ListPage />*/}
     </>
   );
 }
