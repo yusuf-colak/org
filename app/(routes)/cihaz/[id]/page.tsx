@@ -4,7 +4,18 @@ import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
-
+import PdfViewer from 'components/pdf';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from 'components/ui/alert-dialog';
 const CihazSayfasi = () => {
   const [cihaz, setCihaz] = useState([]);
   const params = useParams();
@@ -71,6 +82,21 @@ const CihazSayfasi = () => {
         <a href={cihaz.pdfURL} target="_blank">
           Tıkayınız!
         </a>
+        <AlertDialog>
+          <AlertDialogTrigger>PDF İncele</AlertDialogTrigger>
+          <AlertDialogContent className="h-[95%] max-w-7xl">
+            <AlertDialogCancel>Kapat</AlertDialogCancel>
+
+            <AlertDialogHeader>
+              {cihaz.pdfURL != '' && cihaz.pdfURL ? (
+                <PdfViewer url={cihaz.pdfURL} />
+              ) : (
+                <p>PDF bulunamadı</p>
+              )}
+            </AlertDialogHeader>
+            <AlertDialogFooter></AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </main>
   );

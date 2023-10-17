@@ -14,21 +14,10 @@ const AddDevicePage = () => {
   };
   return (
     <main className="w-full">
-      <div className="flex justify-between">
-        <Button
-          onClick={() => {
-            router.push('/');
-          }}
-        >
-          Anasayfa
-        </Button>
-        <div className="flex text-xl items-center">
-          <p className="mr-2">Yönlendirme: </p>
-          <Switch checked={yonlendir} onCheckedChange={handleToggleOnOff} />
-        </div>
+      <div className="flex text-xl items-center justify-end">
+        <p className="mr-2">Yönlendirme: </p>
+        <Switch checked={yonlendir} onCheckedChange={handleToggleOnOff} />
       </div>
-      <hr className="mt-3" />
-
       <FormPage yonlendir={yonlendir} />
     </main>
   );

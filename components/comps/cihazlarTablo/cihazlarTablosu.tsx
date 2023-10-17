@@ -18,7 +18,7 @@ export default function CihazlarTablosu() {
   };
 
   useEffect(() => {
-    getData(); // Sayfa yüklendiğinde verileri al
+    getData(); 
   }, []);
 
   return (

@@ -34,6 +34,8 @@ import {
 } from 'components/ui/dropdown-menu';
 import { IconLeft, IconRight } from 'react-day-picker';
 import CihazFiltreleme from './cihaz-filtreleme';
+import Link from 'next/link';
+import { Forward } from 'lucide-react';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -123,8 +125,8 @@ export function DataTable<TData, TValue>({
                     </TableHead>
                   );
                 })}
-                <TableHead className="flex justify-end items-center">
-                  Düzenle / Sil
+                <TableHead className="flex justify-end items-center ">
+                  Yönlendir / Düzenle / Sil
                 </TableHead>
               </TableRow>
             ))}
@@ -144,7 +146,15 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell className="flex justify-end items-center">
+                  <TableCell className="flex justify-end items-center ">
+                    <Link
+                      className=" mr-1 border-1 border rounded-full border-gray-800 p-1 hover:bg-gray-300"
+                      href={`/cihaz/${table
+                        .getRowModel()
+                        .rowsById[row?.id]?.original.id.toString()}`}
+                    >
+                      <Forward />
+                    </Link>
                     <CihazDuzenLE
                       idNumber={table
                         .getRowModel()

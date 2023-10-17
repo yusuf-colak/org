@@ -58,7 +58,7 @@ export const columns: ColumnDef<Payment>[] = [
     header: 'mulkiyetDurumu',
   },
   {
-    yazılısı: 'Kategori',
+    yazılısı: 'Kat',
     accessorKey: 'kat',
     header: 'kat',
   },

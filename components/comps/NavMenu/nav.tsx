@@ -28,6 +28,15 @@ const NavMenu = () => {
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
+            <NavigationMenuLink>
+              <Link href="/cihazEkle" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                 Yeni Cihaz Ekle
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
             <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
             <NavigationMenuContent>
               <Link href="/dashboard" legacyBehavior passHref>
