@@ -16,7 +16,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from 'components/ui/alert-dialog';
+import { useQRCode } from 'next-qrcode';
+import ReactPDF from '@react-pdf/renderer';
+import { PDFViewer } from '@react-pdf/renderer';
+import Pdf_Generate from 'components/pdf-Generate';
+import QrCodePage from 'components/qr-code';
 const CihazSayfasi = () => {
+  const { Canvas } = useQRCode();
+
   const [cihaz, setCihaz] = useState([]);
   const params = useParams();
   useEffect(() => {
@@ -31,6 +38,8 @@ const CihazSayfasi = () => {
   const formattedSonrakiKalibrasyonTarihi = cihaz.kalibrasyonTarihi
     ? format(new Date(cihaz.sonrakiKalibrasyonTarihi), 'PPP', { locale: tr })
     : '';
+
+  console.log(<QrCodePage />);
   return (
     <main>
       <div className="flex">
@@ -97,6 +106,9 @@ const CihazSayfasi = () => {
             <AlertDialogFooter></AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+      </div>
+      <div>
+        <QrCodePage />
       </div>
     </main>
   );
